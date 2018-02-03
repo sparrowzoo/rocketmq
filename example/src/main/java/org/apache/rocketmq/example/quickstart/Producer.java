@@ -31,7 +31,7 @@ public class Producer {
         /*
          * Instantiate with a producer group name.
          */
-        DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
+        DefaultMQProducer producer = new DefaultMQProducer("sparrow-sender");
 
         /*
          * Specify name server addresses.
@@ -48,7 +48,12 @@ public class Producer {
         /*
          * Launch the instance.
          */
+        producer.setNamesrvAddr("127.0.0.1:9876");
+        // Just for testing or demo program
+        //这里设置之后是生产环境
+        producer.setCreateTopicKey("sparrow-topic");
         producer.start();
+
 
         for (int i = 0; i < 1000; i++) {
             try {
@@ -56,8 +61,8 @@ public class Producer {
                 /*
                  * Create a message instance, specifying topic, tag and message body.
                  */
-                Message msg = new Message("TopicTest" /* Topic */,
-                    "TagA" /* Tag */,
+                Message msg = new Message("sparrow-topic" /* Topic */,
+                    "sparrow" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
                 );
 

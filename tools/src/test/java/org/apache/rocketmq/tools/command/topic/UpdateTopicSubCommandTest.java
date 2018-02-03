@@ -30,22 +30,24 @@ public class UpdateTopicSubCommandTest {
         UpdateTopicSubCommand cmd = new UpdateTopicSubCommand();
         Options options = ServerUtil.buildCommandlineOptions(new Options());
         String[] subargs = new String[] {
-            "-b 127.0.0.1:10911",
+            "-b 192.168.0.105:10911",
             "-c default-cluster",
-            "-t unit-test",
+            "-t sparrow-topic",
             "-r 8",
             "-w 8",
             "-p 6",
+            "-n 127.0.0.1:9876",
             "-o false",
             "-u false",
             "-s false"};
+
         final CommandLine commandLine =
             ServerUtil.parseCmdLine("mqadmin " + cmd.commandName(), subargs, cmd.buildCommandlineOptions(options), new PosixParser());
-        assertThat(commandLine.getOptionValue('b').trim()).isEqualTo("127.0.0.1:10911");
+        assertThat(commandLine.getOptionValue('b').trim()).isEqualTo("192.168.0.105:10911");
         assertThat(commandLine.getOptionValue('c').trim()).isEqualTo("default-cluster");
         assertThat(commandLine.getOptionValue('r').trim()).isEqualTo("8");
         assertThat(commandLine.getOptionValue('w').trim()).isEqualTo("8");
-        assertThat(commandLine.getOptionValue('t').trim()).isEqualTo("unit-test");
+        assertThat(commandLine.getOptionValue('t').trim()).isEqualTo("sparrow-topic");
         assertThat(commandLine.getOptionValue('p').trim()).isEqualTo("6");
         assertThat(commandLine.getOptionValue('o').trim()).isEqualTo("false");
         assertThat(commandLine.getOptionValue('u').trim()).isEqualTo("false");

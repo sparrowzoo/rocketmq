@@ -53,6 +53,9 @@ public class BrokerStartup {
     public static Logger log;
 
     public static void main(String[] args) {
+        if (args == null || args.length == 0) {
+            args = new String[] {"-n", "127.0.0.1:9876", "autoCreateTopicEnable=true"};
+        }
         start(createBrokerController(args));
     }
 
