@@ -49,8 +49,7 @@ public class NamesrvStartup {
     public static NamesrvController main0(String[] args) {
         System.setProperty(RemotingCommand.REMOTING_VERSION_KEY, Integer.toString(MQVersion.CURRENT_VERSION));
         try {
-            //PackageConflictDetect.detectFastjson();
-
+            System.out.println(args);
             Options options = ServerUtil.buildCommandlineOptions(new Options());
             commandLine = ServerUtil.parseCmdLine("mqnamesrv", args, buildCommandlineOptions(options), new PosixParser());
             if (null == commandLine) {
