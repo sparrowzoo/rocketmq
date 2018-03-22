@@ -161,6 +161,7 @@ public class MQPullConsumerScheduleService {
 
         @Override
         public void run() {
+            log.info("sparrow-consume pull consumer schedule ...");
             String topic = this.messageQueue.getTopic();
             if (!this.isCancelled()) {
                 PullTaskCallback pullTaskCallback =
