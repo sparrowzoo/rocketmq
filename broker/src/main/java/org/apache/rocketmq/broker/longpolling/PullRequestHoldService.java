@@ -95,6 +95,7 @@ public class PullRequestHoldService extends ServiceThread {
 
     private void checkHoldRequest() {
         for (String key : this.pullRequestTable.keySet()) {
+            //topic@queueId
             String[] kArray = key.split(TOPIC_QUEUEID_SEPARATOR);
             if (2 == kArray.length) {
                 String topic = kArray[0];
@@ -115,6 +116,7 @@ public class PullRequestHoldService extends ServiceThread {
 
     public void notifyMessageArriving(final String topic, final int queueId, final long maxOffset, final Long tagsCode,
         long msgStoreTime, byte[] filterBitMap, Map<String, String> properties) {
+        //topic@queueId
         String key = this.buildKey(topic, queueId);
         ManyPullRequest mpr = this.pullRequestTable.get(key);
         if (mpr != null) {

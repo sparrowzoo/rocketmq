@@ -33,6 +33,11 @@ public class UtilAllTest {
     }
 
     @Test
+    public void offset2FileName(){
+        System.out.println(UtilAll.offset2FileName(1000000000000000000L));
+    }
+
+   @Test
     public void testProperties2Object() {
         DemoConfig demoConfig = new DemoConfig();
         Properties properties = new Properties();

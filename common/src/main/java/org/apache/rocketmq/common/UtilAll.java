@@ -51,6 +51,10 @@ public class UtilAll {
     public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
     final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
+    /**
+     * 获取当前进程id
+     * @return
+     */
     public static int getPid() {
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
         String name = runtime.getName(); // format: "pid@hostname"
@@ -61,6 +65,10 @@ public class UtilAll {
         }
     }
 
+    /**
+     * 获取当前线程的堆栈信息 stack dump
+     * @return
+     */
     public static String currentStackTrace() {
         StringBuilder sb = new StringBuilder();
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -80,10 +88,21 @@ public class UtilAll {
         return nf.format(offset);
     }
 
+    /**
+     * elapse time
+     * @param beginTime
+     * @return
+     */
     public static long computeEclipseTimeMilliseconds(final long beginTime) {
         return System.currentTimeMillis() - beginTime;
     }
 
+    /**
+     * 是否到某小时
+     *
+     * @param when 01;02;08
+     * @return
+     */
     public static boolean isItTimeToDo(final String when) {
         String[] whiles = when.split(";");
         if (whiles.length > 0) {
@@ -126,6 +145,7 @@ public class UtilAll {
     public static long computNextMinutesTimeMillis() {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
+        //为什么
         cal.add(Calendar.DAY_OF_MONTH, 0);
         cal.add(Calendar.HOUR_OF_DAY, 0);
         cal.add(Calendar.MINUTE, 1);
