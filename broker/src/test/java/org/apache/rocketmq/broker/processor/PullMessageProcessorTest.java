@@ -133,6 +133,7 @@ public class PullMessageProcessorTest {
         RemotingCommand response = pullMessageProcessor.processRequest(handlerContext, request);
         assertThat(response).isNotNull();
         assertThat(response.getCode()).isEqualTo(ResponseCode.SUCCESS);
+        System.out.println(response);
     }
 
     @Test
@@ -194,14 +195,14 @@ public class PullMessageProcessorTest {
 
     private RemotingCommand createPullMsgCommand(int requestCode) {
         PullMessageRequestHeader requestHeader = new PullMessageRequestHeader();
-        requestHeader.setCommitOffset(123L);
+        requestHeader.setCommitOffset(223L);
         requestHeader.setConsumerGroup(group);
         requestHeader.setMaxMsgNums(100);
         requestHeader.setQueueId(1);
         requestHeader.setQueueOffset(456L);
         requestHeader.setSubscription("*");
         requestHeader.setTopic(topic);
-        requestHeader.setSysFlag(0);
+        requestHeader.setSysFlag(1);
         requestHeader.setSubVersion(100L);
         RemotingCommand request = RemotingCommand.createRequestCommand(requestCode, requestHeader);
         request.makeCustomHeaderToNet();

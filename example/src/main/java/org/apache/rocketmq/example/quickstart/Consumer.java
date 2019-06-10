@@ -63,10 +63,10 @@ public class Consumer {
          */
         consumer.subscribe("sparrow-test-topic", "*");
 
-        consumer.setConsumeThreadMin(5);
-        consumer.setPullInterval(10000);
-        consumer.setPullBatchSize(500);
-        consumer.setConsumeMessageBatchMaxSize(100);
+        consumer.setConsumeThreadMin(2);
+        consumer.setPullInterval(2000);
+        consumer.setPullBatchSize(10);
+        consumer.setConsumeMessageBatchMaxSize(5);
 
 //        new Thread(new Runnable() {
 //            @Override
@@ -108,19 +108,19 @@ public class Consumer {
                     }
                 }
 
-                if(msgs.size()<500){
-                    consumer.setPullInterval(10000);
-                }
-                else {
-                    consumer.setPullInterval(100);
-                }
+//                if(msgs.size()<500){
+//                    consumer.setPullInterval(10000);
+//                }
+//                else {
+//                    consumer.setPullInterval(100);
+//                }
                 System.err.println(System.currentTimeMillis()/1000+Thread.currentThread().getName()+" message size :"+ msgs.size());
                 //System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
-//                try {
-//                    Thread.sleep(Integer.MAX_VALUE);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
