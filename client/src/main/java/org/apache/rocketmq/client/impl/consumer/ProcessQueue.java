@@ -136,6 +136,10 @@ public class ProcessQueue {
                         this.queueOffsetMax = msg.getQueueOffset();
                         msgSize.addAndGet(msg.getBody().length);
                     }
+                    else
+                    {
+                        System.err.println(old+"exist");
+                    }
                 }
                 msgCount.addAndGet(validMsgCnt);
 
