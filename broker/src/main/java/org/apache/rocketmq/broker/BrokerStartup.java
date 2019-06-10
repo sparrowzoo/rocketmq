@@ -53,6 +53,7 @@ public class BrokerStartup {
     public static Logger log;
 
     public static void main(String[] args) {
+        //BrokerPathConfigHelper
         if (args == null || args.length == 0) {
             args = new String[] {"-n", "127.0.0.1:9876", "autoCreateTopicEnable=true"};
         }
@@ -109,6 +110,8 @@ public class BrokerStartup {
                 String.valueOf(TlsSystemConfig.tlsMode == TlsMode.ENFORCING))));
             nettyServerConfig.setListenPort(10911);
             final MessageStoreConfig messageStoreConfig = new MessageStoreConfig();
+
+            messageStoreConfig.setMaxTransferCountOnMessageInMemory(500);
 
             if (BrokerRole.SLAVE == messageStoreConfig.getBrokerRole()) {
                 int ratio = messageStoreConfig.getAccessMessageInMemoryMaxRatio() - 10;
@@ -201,7 +204,7 @@ public class BrokerStartup {
             MixAll.printObjectProperties(log, nettyServerConfig);
             MixAll.printObjectProperties(log, nettyClientConfig);
             MixAll.printObjectProperties(log, messageStoreConfig);
-
+            System.err.println("message store path");
             final BrokerController controller = new BrokerController(
                 brokerConfig,
                 nettyServerConfig,

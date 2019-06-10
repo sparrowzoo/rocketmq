@@ -299,6 +299,7 @@ public class MQClientInstance {
 
             @Override
             public void run() {
+                System.err.println("persist consumer offset getPersistConsumerOffsetInterval "+MQClientInstance.this.clientConfig.getPersistConsumerOffsetInterval()+" ms");
                 try {
                     MQClientInstance.this.persistAllConsumerOffset();
                 } catch (Exception e) {

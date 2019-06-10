@@ -51,17 +51,17 @@ public class Producer {
         producer.setNamesrvAddr("127.0.0.1:9876");
         // Just for testing or demo program
         //这里设置之后是生产环境
-        producer.setCreateTopicKey("sparrow-topic");
+        producer.setCreateTopicKey("sparrow-test-topic");
         producer.start();
 
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
             try {
 
                 /*
                  * Create a message instance, specifying topic, tag and message body.
                  */
-                Message msg = new Message("sparrow-topic" /* Topic */,
+                Message msg = new Message("sparrow-test-topic" /* Topic */,
                     "sparrow" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
                 );
@@ -69,6 +69,7 @@ public class Producer {
                 /*
                  * Call send message to deliver message to one of brokers.
                  */
+                producer.setCreateTopicKey("sparrow-test-topic");
                 SendResult sendResult = producer.send(msg);
 
                 System.out.printf("%s%n", sendResult);

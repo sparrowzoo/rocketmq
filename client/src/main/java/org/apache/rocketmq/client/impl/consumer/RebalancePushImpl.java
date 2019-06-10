@@ -139,6 +139,7 @@ public class RebalancePushImpl extends RebalanceImpl {
 
     @Override
     public long computePullFromWhere(MessageQueue mq) {
+        System.err.println("compute pull from where "+mq.getQueueId());
         long result = -1;
         final ConsumeFromWhere consumeFromWhere = this.defaultMQPushConsumerImpl.getDefaultMQPushConsumer().getConsumeFromWhere();
         final OffsetStore offsetStore = this.defaultMQPushConsumerImpl.getOffsetStore();

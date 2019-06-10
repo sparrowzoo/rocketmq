@@ -44,6 +44,7 @@ public class PullMessageService extends ServiceThread {
     }
 
     public void executePullRequestLater(final PullRequest pullRequest, final long timeDelay) {
+        System.err.println("execute pull request later " +timeDelay);
         this.scheduledExecutorService.schedule(new Runnable() {
 
             @Override
@@ -85,7 +86,9 @@ public class PullMessageService extends ServiceThread {
 
         while (!this.isStopped()) {
             try {
+                System.err.println(" take pull request queue ");
                 PullRequest pullRequest = this.pullRequestQueue.take();
+
                 if (pullRequest != null) {
                     this.pullMessage(pullRequest);
                 }

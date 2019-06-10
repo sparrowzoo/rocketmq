@@ -39,6 +39,7 @@ public abstract class ServiceThread implements Runnable {
     public abstract String getServiceName();
 
     public void start() {
+        System.err.println("take pull thread start ");
         this.thread.start();
     }
 

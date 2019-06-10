@@ -285,6 +285,7 @@ public class BrokerController {
             this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    System.err.println("persist consumer offset "+BrokerController.this.brokerConfig.getFlushConsumerOffsetInterval()+"ms");
                     try {
                         BrokerController.this.consumerOffsetManager.persist();
                     } catch (Throwable e) {

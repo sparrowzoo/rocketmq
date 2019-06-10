@@ -16,7 +16,10 @@
  */
 package org.apache.rocketmq.example.quickstart;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -30,12 +33,13 @@ import org.apache.rocketmq.common.message.MessageExt;
  */
 public class Consumer {
 
+    private static Set<String> key=new HashSet<>();
     public static void main(String[] args) throws InterruptedException, MQClientException {
 
         /*
          * Instantiate with specified consumer group name.
          */
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name_4");
+        final DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name_4");
 
         /*
          * Specify name server addresses.
@@ -57,9 +61,36 @@ public class Consumer {
         /*
          * Subscribe one more more topics to consume.
          */
-        consumer.subscribe("sparrow-test", "*");
+        consumer.subscribe("sparrow-test-topic", "*");
 
-        /*
+        consumer.setConsumeThreadMin(5);
+        consumer.setPullInterval(10000);
+        consumer.setPullBatchSize(500);
+        consumer.setConsumeMessageBatchMaxSize(100);
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                boolean is10=true;
+//                while (true) {
+//                    try {
+//                        Thread.sleep(10000L);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    if(is10) {
+//                        consumer.setPullInterval(0);
+//                        is10=!is10;
+//                    }else {
+//                        consumer.setPullInterval(10000L);
+//                        is10=!is10;
+//                    }
+//                }
+//            }
+//        }).start();
+
+
+       /*
          *  Register callback to execute on arrival of messages fetched from brokers.
          */
         consumer.registerMessageListener(new MessageListenerConcurrently() {
@@ -67,7 +98,29 @@ public class Consumer {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
                 ConsumeConcurrentlyContext context) {
-                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+                for(MessageExt messageExt:msgs){
+                    if(key.contains(messageExt.getMsgId())) {
+                        System.out.println("exist" + messageExt.getMsgId());
+                    }
+                    else
+                    {
+                        key.add(messageExt.getMsgId());
+                    }
+                }
+
+                if(msgs.size()<500){
+                    consumer.setPullInterval(10000);
+                }
+                else {
+                    consumer.setPullInterval(100);
+                }
+                System.err.println(System.currentTimeMillis()/1000+Thread.currentThread().getName()+" message size :"+ msgs.size());
+                //System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+//                try {
+//                    Thread.sleep(Integer.MAX_VALUE);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

@@ -1680,6 +1680,7 @@ public class DefaultMessageStore implements MessageStore {
             while (!this.isStopped()) {
                 try {
                     int interval = DefaultMessageStore.this.getMessageStoreConfig().getFlushIntervalConsumeQueue();
+                    System.err.println("flush message sore per "+interval+" ms");
                     this.waitForRunning(interval);
                     this.doFlush(1);
                 } catch (Exception e) {
