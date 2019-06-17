@@ -198,7 +198,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
     }
 
     public void pullMessage(final PullRequest pullRequest) {
-        System.err.println("pull request next offset "+pullRequest.getNextOffset());
+        System.err.println("thread name ="+Thread.currentThread().getName()+", thread id ="+Thread.currentThread().getId()+" queue id "+pullRequest.getMessageQueue().getQueueId()+"pull request next offset "+pullRequest.getNextOffset());
         final ProcessQueue processQueue = pullRequest.getProcessQueue();
         if (processQueue.isDropped()) {
             log.info("the pull request[{}] is dropped.", pullRequest.toString());
@@ -307,16 +307,16 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
                             if (pullResult.getMsgFoundList() == null || pullResult.getMsgFoundList().isEmpty()) {
                                 DefaultMQPushConsumerImpl.this.executePullRequestImmediately(pullRequest);
                             } else {
-                                System.err.println("pull result found  "+ pullResult.getMsgFoundList().size());
-                                firstMsgOffset = pullResult.getMsgFoundList().get(0).getQueueOffset();
 
+                                firstMsgOffset = pullResult.getMsgFoundList().get(0).getQueueOffset();
+                                System.err.println("Thread name "+Thread.currentThread().getName()+"pull result found  "+ firstMsgOffset+"-"+pullResult.getMsgFoundList().get(pullResult.getMsgFoundList().size()-1).getQueueOffset());
                                 DefaultMQPushConsumerImpl.this.getConsumerStatsManager().incPullTPS(pullRequest.getConsumerGroup(),
                                     pullRequest.getMessageQueue().getTopic(), pullResult.getMsgFoundList().size());
 
                                 boolean dispathToConsume = processQueue.putMessage(pullResult.getMsgFoundList());
                                 TreeMap map=processQueue.getMsgTreeMap();
                                 if(map!=null&&map.size()>0){
-                                    System.err.println("pull meg list from "+map.firstKey()+" to "+map.lastKey());
+                                    System.err.println(Thread.currentThread().getName()+"-"+pullRequest.getMessageQueue().getQueueId()+"========================pull msg list from "+map.firstKey()+" to "+map.lastKey());
                                 }
 
                                 //todo 提交消费

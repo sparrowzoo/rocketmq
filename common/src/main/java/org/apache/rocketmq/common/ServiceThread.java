@@ -33,13 +33,13 @@ public abstract class ServiceThread implements Runnable {
     protected volatile boolean stopped = false;
 
     public ServiceThread() {
+        System.err.println("thread name "+this.getServiceName());
         this.thread = new Thread(this, this.getServiceName());
     }
 
     public abstract String getServiceName();
 
     public void start() {
-        System.err.println("take pull thread start ");
         this.thread.start();
     }
 

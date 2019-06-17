@@ -84,6 +84,7 @@ public class QueryMessageProcessor implements NettyRequestProcessor {
             requestHeader.setMaxNum(this.brokerController.getMessageStoreConfig().getDefaultQueryMaxNum());
         }
 
+        //通过key查询
         final QueryMessageResult queryMessageResult =
             this.brokerController.getMessageStore().queryMessage(requestHeader.getTopic(),
                 requestHeader.getKey(), requestHeader.getMaxNum(), requestHeader.getBeginTimestamp(),

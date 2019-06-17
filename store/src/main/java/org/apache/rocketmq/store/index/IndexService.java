@@ -40,8 +40,21 @@ public class IndexService {
      */
     private static final int MAX_TRY_IDX_CREATE = 3;
     private final DefaultMessageStore defaultMessageStore;
+    /**
+     * 500 0000 个
+     */
     private final int hashSlotNum;
+    /**
+     * 5000000 * 4
+     */
     private final int indexNum;
+    /**
+     * /rocket_home/store/index/年月日时分秒
+     *
+     *  String fileName =
+     *                     this.storePath + File.separator
+     *                         + UtilAll.timeMillisToHumanString(System.currentTimeMillis());
+     */
     private final String storePath;
     private final ArrayList<IndexFile> indexFileList = new ArrayList<IndexFile>();
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
@@ -154,6 +167,15 @@ public class IndexService {
         }
     }
 
+    /**
+     * 查询该 topic 和key下的offset 集合
+     * @param topic
+     * @param key
+     * @param maxNum
+     * @param begin
+     * @param end
+     * @return
+     */
     public QueryOffsetResult queryOffset(String topic, String key, int maxNum, long begin, long end) {
         List<Long> phyOffsets = new ArrayList<Long>(maxNum);
 

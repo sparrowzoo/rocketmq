@@ -92,7 +92,9 @@ public class IndexFile {
     public boolean putKey(final String key, final long phyOffset, final long storeTimestamp) {
         if (this.indexHeader.getIndexCount() < this.indexNum) {
             int keyHash = indexKeyHashMethod(key);
+            //slot position
             int slotPos = keyHash % this.hashSlotNum;
+            //header + slot+position* 4 (hash size ==int size)
             int absSlotPos = IndexHeader.INDEX_HEADER_SIZE + slotPos * hashSlotSize;
 
             FileLock fileLock = null;
@@ -118,15 +120,33 @@ public class IndexFile {
                     timeDiff = 0;
                 }
 
+                //max index position
                 int absIndexPos =
                     IndexHeader.INDEX_HEADER_SIZE + this.hashSlotNum * hashSlotSize
                         + this.indexHeader.getIndexCount() * indexSize;
 
+                /**
+                 * 4字节（hashcode）
+                 * */
                 this.mappedByteBuffer.putInt(absIndexPos, keyHash);
+                /**
+                 *  8字节（commitlog offset）
+                 *
+                 */
                 this.mappedByteBuffer.putLong(absIndexPos + 4, phyOffset);
+                /**
+                 * 4字节（commitlog存储时间与indexfile第一个条目的时间差，单位秒）
+                 */
                 this.mappedByteBuffer.putInt(absIndexPos + 4 + 8, (int) timeDiff);
+                /**
+                 * 4字节（同hashcode的上一个的位置，0表示没有上一个）
+                 */
+
                 this.mappedByteBuffer.putInt(absIndexPos + 4 + 8 + 4, slotValue);
 
+                /**
+                 * slot position 存入当前index item 的index 存最新的index
+                 */
                 this.mappedByteBuffer.putInt(absSlotPos, this.indexHeader.getIndexCount());
 
                 if (this.indexHeader.getIndexCount() <= 1) {

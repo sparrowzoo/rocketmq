@@ -65,7 +65,7 @@ public class Consumer {
 
         consumer.setConsumeThreadMin(2);
         consumer.setPullInterval(2000);
-        consumer.setPullBatchSize(10);
+        consumer.setPullBatchSize(100);
         consumer.setConsumeMessageBatchMaxSize(5);
 
 //        new Thread(new Runnable() {

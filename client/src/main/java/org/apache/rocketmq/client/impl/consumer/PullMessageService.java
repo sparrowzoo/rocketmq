@@ -86,7 +86,8 @@ public class PullMessageService extends ServiceThread {
 
         while (!this.isStopped()) {
             try {
-                System.err.println(" take pull request queue ");
+                System.err.println("thread name ="+Thread.currentThread().getName()+", thread id ="+Thread.currentThread().getId()+" queue id ");
+
                 PullRequest pullRequest = this.pullRequestQueue.take();
 
                 if (pullRequest != null) {

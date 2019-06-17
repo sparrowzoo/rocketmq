@@ -439,6 +439,7 @@ public class DefaultMessageStore implements MessageStore {
     public GetMessageResult getMessage(final String group, final String topic, final int queueId, final long offset,
         final int maxMsgNums,
         final MessageFilter messageFilter) {
+        System.err.println("broker get message "+group+" topic "+topic+" queue id "+queueId);
         if (this.shutdown) {
             log.warn("message store has shutdown, so getMessage is forbidden");
             return null;
@@ -597,6 +598,7 @@ public class DefaultMessageStore implements MessageStore {
         this.storeStatsService.setGetMessageEntireTimeMax(eclipseTime);
 
         getResult.setStatus(status);
+        System.err.println("getResult.setNextBeginOffset(nextBeginOffset)"+nextBeginOffset);
         getResult.setNextBeginOffset(nextBeginOffset);
         getResult.setMaxOffset(maxOffset);
         getResult.setMinOffset(minOffset);

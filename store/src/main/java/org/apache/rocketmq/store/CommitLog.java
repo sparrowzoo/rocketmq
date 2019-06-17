@@ -363,19 +363,20 @@ public class CommitLog {
     }
 
     private static int calMsgLength(int bodyLength, int topicLength, int propertiesLength) {
-        final int msgLen = 4 //TOTALSIZE
-            + 4 //MAGICCODE
-            + 4 //BODYCRC
-            + 4 //QUEUEID
-            + 4 //FLAG
-            + 8 //QUEUEOFFSET
-            + 8 //PHYSICALOFFSET
-            + 4 //SYSFLAG
-            + 8 //BORNTIMESTAMP
-            + 8 //BORNHOST
-            + 8 //STORETIMESTAMP
-            + 8 //STOREHOSTADDRESS
-            + 4 //RECONSUMETIMES
+        final int msgLen =
+              4 //TOTALSIZE     消息总长度
+            + 4 //MAGICCODE     魔数
+            + 4 //BODYCRC       消息内容的crc
+            + 4 //QUEUEID       消息队列ID
+            + 4 //FLAG          标记位
+            + 8 //QUEUEOFFSET   消息队偏移量
+            + 8 //PHYSICALOFFSET物理偏移量
+            + 4 //SYSFLAG       系统标记
+            + 8 //BORNTIMESTAMP 产生时间戮
+            + 8 //BORNHOST      host:port
+            + 8 //STORETIMESTAMP存储时间
+            + 8 //STOREHOSTADDRESS存储地址 host:port
+            + 4 //RECONSUMETIMES    消息消费重试次数
             + 8 //Prepared Transaction Offset
             + 4 + (bodyLength > 0 ? bodyLength : 0) //BODY
             + 1 + topicLength //TOPIC

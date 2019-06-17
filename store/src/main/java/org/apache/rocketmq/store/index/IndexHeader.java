@@ -17,10 +17,13 @@
 package org.apache.rocketmq.store.index;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class IndexHeader {
+    //需要根据消息ID，来查找消息
     public static final int INDEX_HEADER_SIZE = 40;
     private static int beginTimestampIndex = 0;
     private static int endTimestampIndex = 8;
@@ -28,7 +31,17 @@ public class IndexHeader {
     private static int endPhyoffsetIndex = 24;
     private static int hashSlotcountIndex = 32;
     private static int indexCountIndex = 36;
+
+    /**
+     *          endTimestampIndex          hashSlotcountIndex
+     * 0        8        16       24       32   36   40
+     * \--------\--------\--------\--------\---- ----\
+     * beginTimestampIndex        endPhyoffsetIndex
+     *                  beginPhyoffsetIndex     indexCountIndex
+     */
+
     private final ByteBuffer byteBuffer;
+
     private AtomicLong beginTimestamp = new AtomicLong(0);
     private AtomicLong endTimestamp = new AtomicLong(0);
     private AtomicLong beginPhyOffset = new AtomicLong(0);
@@ -42,6 +55,7 @@ public class IndexHeader {
     }
 
     public void load() {
+
         this.beginTimestamp.set(byteBuffer.getLong(beginTimestampIndex));
         this.endTimestamp.set(byteBuffer.getLong(endTimestampIndex));
         this.beginPhyOffset.set(byteBuffer.getLong(beginPhyoffsetIndex));
