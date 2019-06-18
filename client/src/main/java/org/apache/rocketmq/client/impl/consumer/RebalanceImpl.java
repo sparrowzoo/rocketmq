@@ -397,6 +397,7 @@ public abstract class RebalanceImpl {
             }
         }
 
+        System.out.println("reblance thread name "+Thread.currentThread().getName());
         this.dispatchPullRequest(pullRequestList);
 
         return changed;

@@ -56,6 +56,7 @@ public class PullMessageService extends ServiceThread {
 
     public void executePullRequestImmediately(final PullRequest pullRequest) {
         try {
+            System.out.println("executePullRequestImmediately "+Thread.currentThread().getName()+" thread id "+Thread.currentThread().getId());
             this.pullRequestQueue.put(pullRequest);
         } catch (InterruptedException e) {
             log.error("executePullRequestImmediately pullRequestQueue.put", e);
@@ -82,7 +83,7 @@ public class PullMessageService extends ServiceThread {
 
     @Override
     public void run() {
-        log.info(this.getServiceName() + " service started");
+        log.info(this.getServiceName() + " service started thread name "+Thread.currentThread().getName());
 
         while (!this.isStopped()) {
             try {
@@ -90,6 +91,7 @@ public class PullMessageService extends ServiceThread {
 
                 PullRequest pullRequest = this.pullRequestQueue.take();
 
+                System.err.println(pullRequest.getConsumerGroup()+" thread name "+Thread.currentThread().getName()+"thread id "+Thread.currentThread().getId()+" pull message service address "+this.toString());
                 if (pullRequest != null) {
                     this.pullMessage(pullRequest);
                 }

@@ -36,10 +36,14 @@ public class Consumer {
     private static Set<String> key=new HashSet<>();
     public static void main(String[] args) throws InterruptedException, MQClientException {
 
-        /*
-         * Instantiate with specified consumer group name.
-         */
-        final DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name_4");
+       newConsumer("consumer-group-1");
+        newConsumer("consumer-group-2");
+    }
+
+    private static void newConsumer(String consumerName) throws MQClientException { /*
+     * Instantiate with specified consumer group name.
+     */
+        final DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerName);
 
         /*
          * Specify name server addresses.
@@ -67,6 +71,8 @@ public class Consumer {
         consumer.setPullInterval(2000);
         consumer.setPullBatchSize(100);
         consumer.setConsumeMessageBatchMaxSize(5);
+        consumer.setPullThresholdForQueue(2000);
+                //pullThresholdForQueue
 
 //        new Thread(new Runnable() {
 //            @Override
@@ -90,14 +96,14 @@ public class Consumer {
 //        }).start();
 
 
-       /*
+        /*
          *  Register callback to execute on arrival of messages fetched from brokers.
          */
         consumer.registerMessageListener(new MessageListenerConcurrently() {
 
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
-                ConsumeConcurrentlyContext context) {
+                                                            ConsumeConcurrentlyContext context) {
                 for(MessageExt messageExt:msgs){
                     if(key.contains(messageExt.getMsgId())) {
                         System.out.println("exist" + messageExt.getMsgId());
@@ -130,6 +136,5 @@ public class Consumer {
          */
         consumer.start();
 
-        System.out.printf("Consumer Started.%n");
-    }
+        System.out.printf("Consumer Started.%n");}
 }
