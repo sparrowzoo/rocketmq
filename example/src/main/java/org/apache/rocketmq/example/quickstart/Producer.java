@@ -33,6 +33,8 @@ public class Producer {
          */
         DefaultMQProducer producer = new DefaultMQProducer("sparrow-sender");
 
+        //todo 创建topic with queue num
+        //producer.createTopic();
         /*
          * Specify name server addresses.
          * <p/>
@@ -69,7 +71,6 @@ public class Producer {
                 /*
                  * Call send message to deliver message to one of brokers.
                  */
-                producer.setCreateTopicKey("sparrow-test-topic");
                 SendResult sendResult = producer.send(msg);
 
                 System.out.printf("%s%n", sendResult);

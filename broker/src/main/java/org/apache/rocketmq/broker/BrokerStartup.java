@@ -55,6 +55,7 @@ public class BrokerStartup {
     public static void main(String[] args) {
         //BrokerPathConfigHelper
         if (args == null || args.length == 0) {
+            //-s hdfs:///flink/checkpoints/d32f0b85e75e4b5c12500b1041938955/chk-533
             args = new String[] {"-n", "127.0.0.1:9876", "autoCreateTopicEnable=true"};
         }
         start(createBrokerController(args));

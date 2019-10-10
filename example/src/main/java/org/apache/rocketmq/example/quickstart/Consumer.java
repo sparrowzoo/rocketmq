@@ -33,11 +33,12 @@ import org.apache.rocketmq.common.message.MessageExt;
  */
 public class Consumer {
 
-    private static Set<String> key=new HashSet<>();
-    public static void main(String[] args) throws InterruptedException, MQClientException {
+    private static Set<String> key = new HashSet<>();
 
-       newConsumer("consumer-group-1");
-        newConsumer("consumer-group-2");
+    public static void main(String[] args) throws InterruptedException, MQClientException {
+        newConsumer("sparrow-sender");
+        //newConsumer("consumer-group-1");
+        //newConsumer("consumer-group-2");
     }
 
     private static void newConsumer(String consumerName) throws MQClientException { /*
@@ -72,7 +73,7 @@ public class Consumer {
         consumer.setPullBatchSize(100);
         consumer.setConsumeMessageBatchMaxSize(5);
         consumer.setPullThresholdForQueue(2000);
-                //pullThresholdForQueue
+        //pullThresholdForQueue
 
 //        new Thread(new Runnable() {
 //            @Override
@@ -104,12 +105,11 @@ public class Consumer {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
                                                             ConsumeConcurrentlyContext context) {
-                for(MessageExt messageExt:msgs){
-                    if(key.contains(messageExt.getMsgId())) {
+                for (MessageExt messageExt : msgs) {
+                    System.out.println("consumer "+msgs);
+                    if (key.contains(messageExt.getMsgId())) {
                         System.out.println("exist" + messageExt.getMsgId());
-                    }
-                    else
-                    {
+                    } else {
                         key.add(messageExt.getMsgId());
                     }
                 }
@@ -120,7 +120,7 @@ public class Consumer {
 //                else {
 //                    consumer.setPullInterval(100);
 //                }
-                System.err.println(System.currentTimeMillis()/1000+Thread.currentThread().getName()+" message size :"+ msgs.size());
+                System.err.println(System.currentTimeMillis() / 1000 + Thread.currentThread().getName() + " message size :" + msgs.size());
                 //System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 try {
                     Thread.sleep(500);
@@ -136,5 +136,6 @@ public class Consumer {
          */
         consumer.start();
 
-        System.out.printf("Consumer Started.%n");}
+        System.out.printf("Consumer Started.%n");
+    }
 }
