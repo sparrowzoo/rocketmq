@@ -57,7 +57,7 @@ public class RemoteBrokerOffsetStore implements OffsetStore {
 
     @Override
     public void updateOffset(MessageQueue mq, long offset, boolean increaseOnly) {
-        System.err.println(System.currentTimeMillis()/1000+Thread.currentThread().getName()+" queue id = "+mq.getQueueId()+",update offset ="+offset);
+        log.error(Thread.currentThread().getName()+" queue id = "+mq.getQueueId()+",update offset ="+offset);
         if (mq != null) {
             AtomicLong offsetOld = this.offsetTable.get(mq);
             if (null == offsetOld) {

@@ -33,8 +33,7 @@ public class Producer {
          */
         DefaultMQProducer producer = new DefaultMQProducer("sparrow-sender");
 
-        //todo 创建topic with queue num
-        //producer.createTopic();
+
         /*
          * Specify name server addresses.
          * <p/>
@@ -51,10 +50,14 @@ public class Producer {
          * Launch the instance.
          */
         producer.setNamesrvAddr("127.0.0.1:9876");
-        // Just for testing or demo program
-        //这里设置之后是生产环境
-        producer.setCreateTopicKey("sparrow-test-topic");
+        //先启动再set topic
         producer.start();
+        // Just for testing or demo program
+        //todo 创建topic with queue num
+        //producer.createTopic("sparrow-test","sparrow-topic",4);
+        //这里设置之后是生产环境
+        //producer.setCreateTopicKey("sparrow-topic");
+
 
 
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
@@ -63,11 +66,12 @@ public class Producer {
                 /*
                  * Create a message instance, specifying topic, tag and message body.
                  */
-                Message msg = new Message("sparrow-test-topic" /* Topic */,
+                Message msg = new Message("sparrow-topic" /* Topic */,
                     "sparrow" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
                 );
 
+                Thread.sleep(1000);
                 /*
                  * Call send message to deliver message to one of brokers.
                  */

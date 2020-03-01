@@ -66,12 +66,12 @@ public class Consumer {
         /*
          * Subscribe one more more topics to consume.
          */
-        consumer.subscribe("sparrow-test-topic", "*");
+        consumer.subscribe("sparrow-topic", "*");
 
         consumer.setConsumeThreadMin(2);
-        consumer.setPullInterval(2000);
+        consumer.setPullInterval(10000);
         consumer.setPullBatchSize(100);
-        consumer.setConsumeMessageBatchMaxSize(5);
+        consumer.setConsumeMessageBatchMaxSize(3);
         consumer.setPullThresholdForQueue(2000);
         //pullThresholdForQueue
 
